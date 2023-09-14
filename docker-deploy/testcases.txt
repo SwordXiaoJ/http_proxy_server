@@ -1,0 +1,60 @@
+We used https://mockbin.org/ to generate the following specified response website
+according to our demand.
+
+To test with the following generated website, it’s recommended to use netcat in the notion to get only one request and catch the response.
+Then you can directly see the returned response and the process printed out in the console. The printing info is long and detailed.
+Therefore, it’s not recommended to directly set the firefox browser connected our 12345 port and see the console printed info 
+(It would generate too much!). 
+
+1.	Response with only ETag (123456789)
+http://mockbin.org/bin/21a1c942-b719-484e-a311-5921a4020023?foo=bar&foo=baz
+2.	Response with only Last-Modified (website automatically added ETag)
+https://mockbin.org/bin/30ad1ba5-2a4a-4112-9c7c-9773e47794a0?foo=bar&foo=baz
+3.	Response with only no-store (website automatically added ETag)
+http://mockbin.org/bin/de0373e2-9d24-4202-9e67-bccafc2757be?foo=bar&foo=baz
+4.	Response with only private (website automatically added ETag)
+http://mockbin.org/bin/e3fe18c5-645e-4a76-bcbe-76cf7352238d?foo=bar&foo=baz
+5.	Response with only public (website automatically added ETag)
+http://mockbin.org/bin/f0667bbc-58c7-4033-9fb5-a5dd8a4c6394?foo=bar&foo=baz
+6.	Response with only max-age=60 (website automatically added ETag)
+http://mockbin.org/bin/d854719f-6848-4e6a-b842-1492e5c137e1?foo=bar&foo=baz
+7.	Response with max-age=60, must-revalidate (website automatically added ETag)
+http://mockbin.org/bin/d0c32e41-3575-4569-ab9b-2c10147024a4?foo=bar&foo=baz
+8.	Response with max-age=60, no-cache (website automatically added ETag)
+http://mockbin.org/bin/e8bb4504-8f5c-4cd1-8553-5f6a84a22be4?foo=bar&foo=baz
+
+
+The following is the ordinary website, now you can set the browser proxy port to 12345 and enter the following website to see 
+if proxy server can give responses. It’ s recommended to close the browser’s local cache to test the. 
+
+For firefox, the procedures to close local cache is as follows:
+1.Open the Firefox browser.
+2.In the address bar, type ‘about:config’ and press Enter.
+3.In the search bar, type ‘browser.cache.disk.enable’ and press Enter.
+4.Double click on the ‘browser.cache.disk.enable’ preference to set its value to ‘false’
+5.In the search bar, type ‘browser.cache.memory.enable’ and press Enter.
+6.Double click on the ‘browser.cache.memory.enable’ preference to set its value to ‘false’
+
+Websites are as follows:  
+(Don’t see the console at this time, there’s too much information printed. We do output certain GET request 
+and responses and cache content to files other than logs. But for cache content, only submitting a form(i.e.
+activate POST handler) would update the cache content(it's overwrite while other files are appending). These
+files would be cleared every time you start the proxy server.)
+
+CONNECT request: twitter.com 
+
+POST request: http://httpbin.org/forms/post 
+
+GET request: 
+
+http://www.columbia.edu/~fdc/sample.html 
+http://www.njrsks.net/
+
+chunked message: 
+http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx
+
+
+
+
+
+

@@ -1,0 +1,75 @@
+2/20/2023
+
+1. what if send and recv function fail?
+
+2. what if send and recv function fail to send and recv all the messages in one time?
+
+2/24/2023
+
+1. we need to add '\0' when relaying message from client to server in POST request
+
+2. forgetting to close client socket in the proxy(pHttpClient->fd in my code) would lead to unexpected errors
+
+2/25/2023
+
+1. for a GET request with max-stale header, how should we log?
+
+2. sometimes we can't use recv==0 to check if sender has sent all the messages, because it will stick there and we need to
+calculate whether it has sent all
+
+2/26/2023
+
+1. don't use striptime and mktime in the <ctime>, it's mysterious and peculiar
+
+2/27/2023
+
+1. There's a possibility that even we lock all the operations in the cache, extreme case is that
+one thread can first find msg in the cache but later it's deleted by another thread because cache is full
+
+
+Failures Handled:
+
+1. In CONNECT request, I printed the communication process out and found client didn't respond to our proxy's 200 OK message.
+It turned out that our proxy's 200 OK message had a wrong format. We need to add two "\r\n" after the content.
+
+2. In CONNECT request, when I opened twitter.com. It showed "Secure Connection Failed".
+Later we found we sent one message twice to the other end of the connection tunnel and we fixed it.
+
+3. In POST request, it took a long time for the original server to respond.
+We added '\0' to the POST request sent by the client and then relayed to server. After that, the original server responds fast.
+
+4. In POST request, after the first submission of POST form, we found we couldn't go back and resubmitted (it's always loading)
+We forgot to close the socket to communicate with the client in proxy server and we later added code to fix it
+
+5. In GET request, we couldn't open the website http://www.njrsks.net/. 
+After printing the process, we found that the website sent a whole chunked message in only one time which contradicted our previous
+comprehension of chunked message. We added code to handle such situation.
+
+6. In GET request, we couldn't reopen the website http://www.njrsks.net/ after the first visit(We'd fixed bug 5). It would show a blank page.
+We identified and fixed numerous bugs to solve this problem, including the malfunction of setDate, setMaxAge and setExpires 
+in Response class, mistaken passed-in paremeter of setExpires and wrong return format of getWholeMsg function in Response class.
+
+7. In GET request, we found that some server would send GET response of different formats than MDN, like sending Etag rather than ETag
+We modified our Response class to accomodate for it. 
+
+8. In GET request, we changed our code about time and chunked pic website threw an exception of substr out of range
+we found that because chunked pic website sent back a response with its Expires being -1
+
+
+Exception Guarantee:
+
+1. LRUCache class is strong guarantee. We allow constructor to throw and propogate exception(strong guarantee) while other class functions are no-throw guarantee.
+
+2. Request, Response, DateMap and Timeinfo class are no-throw exception guarantee. Response class could throw inside the parse function, but we used try-catch block.
+
+3. Server and Client class are strong guarantee. Their constructor can throw exceptions, but they won't cause serious problems.
+
+4. handlerHelper.cpp file includes many funcions, we handled possible error cases and return immediately. They are no-throw guarantee
+
+5. handler.cpp includes one main handler function and three sub-hanlder functions, they provide no-throw guarantee
+
+6. Proxy main function has strong exception guarantee. That stems from the strong exception guarantee of Server and LRUCache. If proxy.cpp fails 
+(can't create server or LRUCache), the whole program will crash. It's reasonable because it's crucial for the normal operation of our proxy 
+server. If we can't create server and cache successfully at the beginning, we should exit to let administrator know the problem. And once server
+and cache are created successfully, there won't be any exception being thrown.
+

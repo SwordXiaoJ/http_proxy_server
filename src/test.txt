@@ -1,0 +1,2 @@
+CONNECT google.com:443 HTTP/1.1
+Host: google.com:443

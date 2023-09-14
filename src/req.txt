@@ -1,0 +1,9 @@
+GET http://mockbin.org/bin/8b553b49-9d4c-4769-9f76-f5c20f6878c3?foo=bar&foo=baz HTTP/1.1
+Host: mockbin.org
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/110.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+
